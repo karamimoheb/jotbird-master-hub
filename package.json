@@ -1,0 +1,18 @@
+{
+  "name": "jotbird-master-hub",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:init": "wrangler d1 execute jotbird_hub_db --file=schema.sql --remote",
+    "db:init:local": "wrangler d1 execute jotbird_hub_db --file=schema.sql",
+    "type-check": "tsc --noEmit",
+    "logs": "wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0",
+    "typescript": "^5.0.0",
+    "@cloudflare/workers-types": "^4.20240101.0"
+  }
+}
