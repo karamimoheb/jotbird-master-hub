@@ -1,0 +1,48 @@
+name: Deploy JotBird Master Hub
+
+# هر بار که روی شاخه main تغییر می‌دهید، این Action اجرا می‌شود
+on:
+  push:
+    branches:
+      - main
+  # اگر خواستید دستی هم اجرا کنید:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Cloudflare Workers
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── مرحله ۱: دریافت کد ──
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── مرحله ۲: نصب Node.js ──
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      # ── مرحله ۳: نصب وابستگی‌ها ──
+      - name: Install dependencies
+        run: npm ci
+
+      # ── مرحله ۴: استقرار ──
+      # CLOUDFLARE_API_TOKEN را در GitHub → Settings → Secrets → Actions بگذارید
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # اگر چندین account دارید، account_id را هم اضافه کنید:
+          # accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      # ── مرحله ۵ (اختیاری): اجرای migration دیتابیس ──
+      # فقط اگر schema.sql تغییر کرده باشد این مرحله لازم است
+      # با uncommenting فعال کنید:
+      # - name: Run DB migrations
+      #   uses: cloudflare/wrangler-action@v3
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     command: d1 execute jotbird_hub_db --file=schema.sql --remote
