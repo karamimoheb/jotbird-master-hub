@@ -1,10 +1,13 @@
 {
-  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/refs/heads/main/packages/wrangler/config-schema.json",
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+
   "name": "jotbird-master-hub",
   "main": "src/index.ts",
   "compatibility_date": "2025-01-01",
 
-  // دیتابیس D1 — بعد از ساخت دیتابیس، database_id را اینجا بگذارید
+  // 🔴 این بخش را حتماً اضافه کن (خیلی مهم در CI)
+  "account_id": "e911bdbc0383c40c515dd55cd11f40f6",
+
   "d1_databases": [
     {
       "binding": "DB",
@@ -13,12 +16,7 @@
     }
   ],
 
-  // متغیرهای غیرحساس — مقادیر حساس را در GitHub Secrets بگذارید
   "vars": {
     "ENVIRONMENT": "production"
   }
-
-  // ⚠️ هرگز MASTER_API_KEY و JWT_SECRET را اینجا ننویسید!
-  // آن‌ها را از طریق Cloudflare Dashboard → Workers → Settings → Variables
-  // یا از طریق GitHub Actions با wrangler secret put تنظیم کنید
 }
