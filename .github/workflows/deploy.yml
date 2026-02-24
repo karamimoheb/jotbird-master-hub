@@ -11,6 +11,9 @@ jobs:
     name: Deploy to Cloudflare Workers
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -18,24 +21,25 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Build project
+        run: npm run build
 
       - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          wranglerVersion: '3.107.3'
-          # اگر چند اکانت دارید، خط زیر را فعال و accountId را در Secrets تنظیم کنید:
-          # accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "3.107.3"
+          command: deploy
 
-      # در صورت نیاز به اجرای migration دیتابیس، بخش زیر را فعال کنید
-       - name: Run DB migrations
-         uses: cloudflare/wrangler-action@v3
-         with:
-           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-           wranglerVersion: '3.107.3'
-           command: d1 execute jotbird_hub_db --file=schema.sql --remote
+      - name: Run DB migrations
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          wranglerVersion: "3.107.3"
+          command: d1 execute jotbird_hub_db --file=schema.sql --remote
