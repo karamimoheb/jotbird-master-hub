@@ -33,9 +33,9 @@ jobs:
           # accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       # در صورت نیاز به اجرای migration دیتابیس، بخش زیر را فعال کنید
-      # - name: Run DB migrations
-      #   uses: cloudflare/wrangler-action@v3
-      #   with:
-      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      #     wranglerVersion: '3.107.3'
-      #     command: d1 execute jotbird_hub_db --file=schema.sql --remote
+       - name: Run DB migrations
+         uses: cloudflare/wrangler-action@v3
+         with:
+           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+           wranglerVersion: '3.107.3'
+           command: d1 execute jotbird_hub_db --file=schema.sql --remote
