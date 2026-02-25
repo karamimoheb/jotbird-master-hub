@@ -1,22 +1,14 @@
 {
   "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
-
   "name": "jotbird-master-hub",
   "main": "src/index.ts",
   "compatibility_date": "2025-01-01",
-
-  // 🔴 این بخش را حتماً اضافه کن (خیلی مهم در CI)
   "account_id": "e911bdbc0383c40c515dd55cd11f40f6",
-
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "jotbird_hub_db",
-      "database_id": "1938ea09-24a1-409c-842f-b9c45b5b101f"
-    }
-  ],
-
   "vars": {
-    "ENVIRONMENT": "production"
+    "ENVIRONMENT": "production",
+    "SUPABASE_URL": "https://smgjmtnvwdtvpkliddhl.supabase.co"
+  },
+  "observability": {
+    "enabled": true
   }
 }
